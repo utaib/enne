@@ -10,11 +10,11 @@
 <meta name="theme-color" content="#6E5F92">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Enne · illustrations">
-<meta property="og:description" content=" Commissions open.">
+<meta property="og:description" content="Quiet worlds, night skies and characters. Commissions open.">
 <meta property="og:image" content="logo.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Enne · illustrations">
-<meta name="twitter:description" content=" Commissions open.">
+<meta name="twitter:description" content="Quiet worlds, night skies and characters. Commissions open.">
 <meta name="twitter:image" content="logo.png">
 <link rel="icon" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
@@ -52,7 +52,7 @@
     </h1>
     <p class="lede fade" style="--d:.26s" data-bind="blurb"></p>
     <div class="acts fade" style="--d:.36s">
-      <a class="btn" href="#work">View the work</a>
+      <a class="btn" href="#work">Past Work</a>
       <a class="link" data-href="discordInvite" href="#" target="_blank" rel="noopener">Commission enquiries →</a>
     </div>
   </div>
@@ -190,10 +190,18 @@ a{color:inherit}
 .hero-art{margin:0}
 .frame{
   background:var(--card);padding:clamp(10px,1.4vw,18px);border:1px solid var(--line);
-  box-shadow:0 30px 60px -40px rgba(44,40,48,.5);overflow:hidden;cursor:pointer;
+  box-shadow:0 30px 60px -40px rgba(44,40,48,.5);overflow:hidden;cursor:pointer;position:relative;
+  transition:transform .5s cubic-bezier(.19,1,.22,1),box-shadow .5s ease;
 }
-.frame img{width:100%;height:auto;transition:transform 1.1s cubic-bezier(.2,.8,.2,1)}
-.frame:hover img{transform:scale(1.02)}
+.frame:hover{transform:translateY(-4px);box-shadow:0 40px 70px -36px rgba(44,40,48,.6)}
+.frame::after{
+  content:"";position:absolute;inset:0;left:-160%;width:55%;pointer-events:none;z-index:1;
+  background:linear-gradient(75deg,transparent,rgba(255,255,255,.45),transparent);
+  transform:skewX(-20deg);transition:left .8s cubic-bezier(.19,1,.22,1);
+}
+.frame:hover::after{left:160%}
+.frame img{width:100%;height:auto;transition:transform 1.1s cubic-bezier(.19,1,.22,1)}
+.frame:hover img{transform:scale(1.03)}
 .ph{aspect-ratio:4/3;background:linear-gradient(100deg,#E7E2DA 30%,#F3F0EA 50%,#E7E2DA 70%);background-size:220% 100%;animation:sk 1.5s linear infinite}
 @keyframes sk{from{background-position:120% 0}to{background-position:-120% 0}}
 .cap{margin-top:.85rem;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--soft)}
@@ -208,15 +216,29 @@ a{color:inherit}
 @media(max-width:620px){.grid{column-count:1}}
 .pic{
   break-inside:avoid;width:100%;margin:0 0 clamp(1.4rem,2.6vw,2.2rem);padding:0;display:block;
-  background:none;border:none;cursor:pointer;text-align:left;
-  opacity:0;transform:translateY(22px);filter:blur(6px);
-  transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1),filter .8s ease;
+  background:none;border:none;cursor:pointer;text-align:left;opacity:0;
 }
-.pic.in{opacity:1;transform:none;filter:none}
-.pic .shot{overflow:hidden;background:var(--card);border:1px solid var(--line);display:block}
-.pic img{width:100%;height:auto;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
-.pic:hover img,.pic:focus-visible img{transform:scale(1.035)}
-.pic .cap{display:flex;justify-content:space-between;gap:1rem;margin-top:.7rem}
+@keyframes popIn{
+  0%{opacity:0;transform:translateY(46px) scale(.88) rotate(-1.6deg);filter:blur(11px)}
+  55%{opacity:1;transform:translateY(-6px) scale(1.02) rotate(.5deg);filter:blur(0)}
+  75%{transform:translateY(2px) scale(.995) rotate(-.15deg)}
+  100%{opacity:1;transform:none;filter:none}
+}
+.pic.in{animation:popIn .85s cubic-bezier(.19,1,.22,1) forwards}
+.pic .shot{overflow:hidden;background:var(--card);border:1px solid var(--line);display:block;position:relative;
+  transition:transform .5s cubic-bezier(.19,1,.22,1),box-shadow .5s ease}
+.pic:hover .shot,.pic:focus-visible .shot{transform:translateY(-5px);box-shadow:0 26px 44px -30px rgba(44,40,48,.55)}
+.pic .shot::after{
+  content:"";position:absolute;inset:0;left:-160%;width:55%;pointer-events:none;
+  background:linear-gradient(75deg,transparent,rgba(255,255,255,.5),transparent);
+  transform:skewX(-20deg);transition:left .75s cubic-bezier(.19,1,.22,1);
+}
+.pic:hover .shot::after,.pic:focus-visible .shot::after{left:160%}
+.pic img{width:100%;height:auto;transition:transform 1s cubic-bezier(.19,1,.22,1)}
+.pic:hover img,.pic:focus-visible img{transform:scale(1.05)}
+.pic .cap{display:flex;justify-content:space-between;gap:1rem;margin-top:.7rem;
+  transition:transform .4s cubic-bezier(.19,1,.22,1)}
+.pic:hover .cap{transform:translateX(3px)}
 .pic .cap b{font-weight:500;letter-spacing:.14em}
 .pic .cap i{font-style:normal;opacity:.6}
 .skel{height:var(--h);margin-bottom:1.8rem;break-inside:avoid;border:1px solid var(--line);
@@ -276,6 +298,7 @@ a{color:inherit}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
   .fade,.reveal,.pic{opacity:1!important;transform:none!important;filter:none!important}
+  .pic .shot::after,.frame::after{display:none}
   html{scroll-behavior:auto}
 }
 </style>
@@ -304,13 +327,14 @@ const SITE = {
   ]
 };
 
-// github repo the images live in
-const REPO = {
-  user:   "utaib",
-  repo:   "enne",
-  branch: "main",
-  folder: "",
-  newestFirst: true
+// where the art lives: numbered files sitting in the same folder as
+// this index.html. Name a drawing 1.jpg, 2.png, 3.jpg ... and so on.
+// Skip a number, delete one, doesn't matter -- whatever numbers exist
+// up to GALLERY.count get shown, nothing else needs touching.
+const GALLERY = {
+  count: 10,                              // highest number to check for
+  exts: ["jpg","jpeg","png","webp","gif"],// tried in this order per number
+  newestFirst: true                       // highest number shows first
 };
 
 // captions, handed out automatically and kept stable per file
@@ -361,8 +385,6 @@ $("#steps").innerHTML=SITE.steps.map(s=>`<li class="step reveal"><h3>${s.t}</h3>
 })();
 
 const grid=$("#grid"), state=$("#state"), count=$("#count");
-const IMG=/\.(png|jpe?g|gif|webp|avif|svg)$/i;
-const SKIP=/^(logo|favicon|icon|og|banner|preview|apple-touch-icon)\b/i;
 let art=[];
 grid.innerHTML=[320,420,260,380,300,350].map(h=>`<div class="skel" style="--h:${h}px"></div>`).join("");
 
@@ -375,25 +397,36 @@ function lineFor(file, used){
   return LINES[k];
 }
 
+function probeImage(src){
+  return new Promise(resolve=>{
+    const img=new Image();
+    img.onload=()=>resolve(true);
+    img.onerror=()=>resolve(false);
+    img.src=src;
+  });
+}
+
 async function load(){
-  if(!REPO.user||!REPO.repo) return fail();
-  const path=REPO.folder?REPO.folder.replace(/^\/|\/$/g,"")+"/":"";
-  try{
-    const r=await fetch(`https://api.github.com/repos/${REPO.user}/${REPO.repo}/contents/${path}?ref=${REPO.branch}`);
-    if(!r.ok) throw new Error(r.status);
-    let files=(await r.json()).filter(f=>f.type==="file"&&IMG.test(f.name)&&!SKIP.test(f.name));
-    files.sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
-    if(REPO.newestFirst) files.reverse();
-    const used=new Set();
-    art=files.map(f=>({line:lineFor(f.name,used),src:f.download_url}));
-    render();
-  }catch(e){ console.warn("gallery:",e); fail(); }
+  const slots=Array.from({length:GALLERY.count},(_,i)=>i+1);
+  const results=await Promise.all(slots.map(async n=>{
+    for(const ext of GALLERY.exts){
+      const src=`${n}.${ext}`;
+      if(await probeImage(src)) return {n,src};
+    }
+    return null;
+  }));
+  let found=results.filter(Boolean);
+  found.sort((a,b)=>GALLERY.newestFirst ? b.n-a.n : a.n-b.n);
+  if(!found.length) return fail();
+  const used=new Set();
+  art=found.map(f=>({line:lineFor(String(f.n),used),src:f.src}));
+  render();
 }
 
 function fail(){
   grid.innerHTML="";
   state.hidden=false;
-  state.textContent="The gallery is having trouble loading. Please try again in a moment.";
+  state.textContent="No numbered images found yet — name a drawing 1.jpg (or .png/.webp) and it will appear here.";
   count.textContent="";
 }
 
